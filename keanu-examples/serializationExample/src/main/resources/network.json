@@ -1,0 +1,54 @@
+{
+  "network": [
+    {
+      "name":"x",
+      "type":"double_constant",
+      "value": 1.0
+    },
+    {
+      "name":"b",
+      "type":"gaussian",
+      "mean":1.0,
+      "std":1.0
+    },
+    {
+      "name":"m",
+      "type":"gaussian",
+      "mean":1.0,
+      "std":1.0,
+      "get_end_value": true
+    },
+    {
+      "name":"mx",
+      "type":"multiplication",
+      "a":"x",
+      "b":"m",
+      "get_end_value": true
+    },
+    {
+      "name":"mx+b",
+      "type":"addition",
+      "a":"mx",
+      "b":"b"
+    },
+    {
+      "name":"y",
+      "type":"gaussian",
+      "mean":"mx+b",
+      "std":1.0
+    }
+
+  ],
+  "observations":[
+    {
+      "name": "y",
+      "samples": [1.0, 4.0],
+      "type": "output"
+    },
+    {
+      "name": "x",
+      "type": "input",
+      "samples": [3.0, 5.0]
+    }
+  ]
+}

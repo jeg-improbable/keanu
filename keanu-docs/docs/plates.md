@@ -58,7 +58,7 @@ plates.
                 .<Double>get("x") //get the vertex that we labelled "x" in that plate
                 .getValue(); //get the value from that vertex
 
-        //Now run an inference algorithm on vertex m and vertex b and you have linear regression
+        serialization
 
     }
 ```
