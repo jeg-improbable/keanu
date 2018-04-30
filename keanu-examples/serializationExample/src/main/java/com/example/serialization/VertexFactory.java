@@ -10,11 +10,12 @@ import io.improbable.keanu.vertices.dbl.nonprobabilistic.operators.binary.PowerV
 import io.improbable.keanu.vertices.dbl.probabilistic.GaussianVertex;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 
 public class VertexFactory{
 
-    Hashtable<String,Vertex> vertex_map;
+    HashMap<String,Vertex> vertex_map;
 
     private DoubleVertex getVertexOrDouble(JSONObject obj, String key, String postfix){
         DoubleVertex v;
@@ -74,7 +75,7 @@ public class VertexFactory{
         return (Vertex)v;
     }
 
-    public VertexFactory(Hashtable<String,Vertex> vertex_map){
+    public VertexFactory(HashMap<String,Vertex> vertex_map){
         this.vertex_map = vertex_map;
         return;
 

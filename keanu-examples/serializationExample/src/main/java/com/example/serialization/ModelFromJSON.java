@@ -24,7 +24,7 @@ public class ModelFromJSON {
 
     private HashSet<Node> replicate_nodes;
 
-    private Hashtable<String,Vertex> vertexes_by_name;
+    private HashMap<String,Vertex> vertexes_by_name;
 
     private VertexFactory vertex_factory;
     private Hashtable<String,ArrayList<Double>> observation_values;
@@ -62,7 +62,7 @@ public class ModelFromJSON {
 
 
             // This method builds vertex
-            vertexes_by_name = new Hashtable<>();
+            vertexes_by_name = new HashMap<>();
 
             vertex_factory = new VertexFactory(vertexes_by_name);
 
@@ -281,7 +281,7 @@ public class ModelFromJSON {
     }
 
     public BayesNet getNetworkOfConnectedGraph(){
-        Vertex v = vertexes_by_name.get(vertexes_by_name.keys().nextElement());
+        Vertex v = vertexes_by_name.get(vertexes_by_name.keySet().iterator().next());
         return new BayesNet(v.getConnectedGraph());
     }
 

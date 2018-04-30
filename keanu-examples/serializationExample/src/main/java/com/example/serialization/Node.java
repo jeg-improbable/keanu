@@ -3,10 +3,7 @@ package com.example.serialization;
 import io.improbable.keanu.vertices.Vertex;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Stack;
+import java.util.*;
 
 public class Node{
     private HashSet<Node> sources;
@@ -86,7 +83,7 @@ public class Node{
         this.name = name;
     }
 
-    public void instantiate_with_blacklist(HashSet<Node> blacklist_nodes, Hashtable<String,Vertex> vertex_map, VertexFactory factory,String postfix){
+    public void instantiate_with_blacklist(HashSet<Node> blacklist_nodes, HashMap<String,Vertex> vertex_map, VertexFactory factory, String postfix){
 
         System.out.printf("instantiate_with_blacklist %s \t %s\n",this.name,postfix);
         if(blacklist_nodes.contains(this)){
