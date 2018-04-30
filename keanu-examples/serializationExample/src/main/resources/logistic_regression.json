@@ -14,19 +14,23 @@
       "name":"b1",
       "type":"gaussian",
       "mean":0.0,
-      "std":5.0
+      "std":5.0,
+      "report_final_value":true
     },
     {
       "name":"b2",
       "type":"gaussian",
       "mean":0.0,
-      "std":5.0
+      "std":5.0,
+      "report_final_value":true
     },
     {
       "name":"b0",
       "type":"gaussian",
       "mean":0.0,
-      "std":5.0
+      "std":5.0,
+      "report_final_value":true
+
     },
     {
       "name":"b1x1",

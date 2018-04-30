@@ -29,8 +29,6 @@ public class Node{
 
     public void add_source(Node source){
 
-        System.out.printf("Adding source %s<=%s\n",name,source.name);
-
         sources.add(source);
         source.add_destinations(this);
     }
@@ -43,10 +41,7 @@ public class Node{
 
         current_path.push(this);
 
-        System.out.printf("Crawling %s\n",name);
-        for(Node n: sources){
-            System.out.printf("Source: %s\n",n.getName());
-        }
+
 
         if(this.name.equals(target_name)){
             ArrayList<Node> path = new ArrayList<Node>();
@@ -85,26 +80,21 @@ public class Node{
 
     public void instantiate_with_blacklist(HashSet<Node> blacklist_nodes, HashMap<String,Vertex> vertex_map, VertexFactory factory, String postfix){
 
-        System.out.printf("instantiate_with_blacklist %s \t %s\n",this.name,postfix);
         if(blacklist_nodes.contains(this)){
             return;
         }
 
         if(this.v == null || this.is_replicate){
-            System.out.printf("\t\t In condition %s\n",this.name);
             boolean have_parents = true;
 
             for(Node s: this.sources){
-                System.out.printf("\t\t Checking %s \n",s.getName());
 
                 if(!(vertex_map.containsKey(s.getName()) || vertex_map.containsKey(s.getName()+postfix))){
-                    System.out.printf("Do not have key\n");
                     have_parents = false;
                 }
             }
 
             if(have_parents){
-                System.out.println("\tI have my parents!");
                 Vertex v = factory.build(this.obj, postfix);
                 vertex_map.put(this.name+postfix,v);
                 setVertex(v);
@@ -112,7 +102,6 @@ public class Node{
         }
 
         for(Node n: destinations){
-            System.out.printf("This is the destination-- %s\n",n.getName());
             n.instantiate_with_blacklist(blacklist_nodes, vertex_map, factory,postfix);
         }
 

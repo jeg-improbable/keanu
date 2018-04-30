@@ -71,7 +71,7 @@ public class ModelFromJSON {
             build_nonreplicate_network();
             build_replicate_networks();
 
-            this.prettyPrint();
+            //this.prettyPrint();
 
         }
         catch(Exception e){
@@ -82,10 +82,15 @@ public class ModelFromJSON {
     private void instantiate_independent_vertexes(){
         for(Node n: independent_nodes){
             if(!replicate_nodes.contains(n)){
-                System.out.printf("Instantiating Independent Node :%s\n",n.getName());
                 Vertex v = vertex_factory.build(n.getObj(),"");
                 vertexes_by_name.put(n.getName(),v);
                 n.setVertex(v);
+
+                if(n.getObj().keySet().contains("report_final_value")){
+                    if(n.getObj().getBoolean("report_final_value")){
+                        output_names_of_interest.add(n.getName());
+                    }
+                }
 
             }
         }
@@ -102,13 +107,7 @@ public class ModelFromJSON {
             }
         }
 
-        System.out.println("Paths: ");
-        for(ArrayList<Node> path: paths){
-            for(Node n:path){
-                System.out.printf("%s->",n.getName());
-            }
-            System.out.println();
-        }
+
 
         for(ArrayList<Node> l: paths){
             for(Node n: l){
@@ -117,10 +116,7 @@ public class ModelFromJSON {
             }
         }
 
-        System.out.println("Replicate nodes");
-        for(Node n: replicate_nodes){
-            System.out.printf("\t %s\n",n.getName());
-        }
+
 
     }
 
@@ -150,7 +146,6 @@ public class ModelFromJSON {
                 }
             }
 
-            System.out.printf("\t\t%s\n",obj.getString("name"));
             if(nodes_by_name.get(obj.getString("name")).getNumberOfSources() == 0){
                 independent_nodes.add(nodes_by_name.get(obj.getString("name")));
             }
@@ -167,9 +162,7 @@ public class ModelFromJSON {
                 target.add(name);
                 ArrayList<Double> list = new ArrayList<>();
 
-                System.out.println("Samples");
 
-                System.out.println(observations.getJSONObject(i).get("samples").getClass().getName());
 
                 JSONArray a = observations.getJSONObject(i).getJSONArray("samples");
                 ArrayList<Double> sampleArray = new ArrayList<Double>();
@@ -184,7 +177,6 @@ public class ModelFromJSON {
 
                 }
                 observation_values.put(name,sampleArray);
-                System.out.println("/Samples");
 
                 //observation_values.put(observations.getJSONObject(i).getString("name"),);
 
@@ -202,7 +194,6 @@ public class ModelFromJSON {
 
         for(int i = 0; i<net.length(); ++i){
             JSONObject obj = net.getJSONObject(i);
-            System.out.println(obj.getString(new String("type")));
             Set<String> keys= obj.toMap().keySet();
 
             String name = obj.getString("name");
@@ -218,11 +209,7 @@ public class ModelFromJSON {
                 }
             }
         }
-        System.out.println("\n\n");
 
-        for(String s: number_of_inputs_by_name.keySet()){
-            System.out.printf("%s %d\n",s,number_of_inputs_by_name.get(s));
-        }
     }
 
     public void prettyPrint(){
@@ -240,6 +227,7 @@ public class ModelFromJSON {
         for (Node n: this.independent_nodes){
             System.out.printf("%s ",n.getName());
         }
+
         System.out.println("Network\n");
         for (String s: vertexes_by_name.keySet()){
             System.out.printf("\t%s\n",s);
@@ -259,8 +247,8 @@ public class ModelFromJSON {
         for(Integer i=0; i<length; ++i){
             String postfix = i.toString();
             for(String s:input_observation_names){
-                System.out.println("build_replicate_networks");
-                System.out.println(s);
+
+
 
                 Node n = nodes_by_name.get(s);
 
@@ -269,15 +257,13 @@ public class ModelFromJSON {
                 n.instantiate_with_blacklist(new HashSet<Node>(),vertexes_by_name,vertex_factory,postfix);
             }
             for(String s:output_observation_names){
-                System.out.println("Setting Observations");
+
 
                 ProbabilisticDouble v = (ProbabilisticDouble)vertexes_by_name.get(s+postfix);
                 Double value = observation_values.get(s).get(i);
                 v.observe(value);
             }
         }
-
-
     }
 
     public BayesNet getNetworkOfConnectedGraph(){
@@ -288,9 +274,13 @@ public class ModelFromJSON {
     public Hashtable <String,Double> getVertecValues(){
         Hashtable <String,Double> ht = new Hashtable<>();
 
+        for(String n: output_names_of_interest){
+            ht.put(n,(Double)vertexes_by_name.get(n).getValue());
+        }
+        /*
         for(String s:vertexes_by_name.keySet()){
             ht.put(s,(Double)vertexes_by_name.get(s).getValue());
-        }
+        }*/
         return ht;
 
     }

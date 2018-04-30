@@ -60,7 +60,7 @@ public class Model {
 
 
         GradientOptimizer optimizer = new GradientOptimizer(b);
-        optimizer.maxLikelihood(1000);
+        optimizer.maxLikelihood(10000);
 
         Hashtable <String,Double>ht =  m.getVertecValues();
 
