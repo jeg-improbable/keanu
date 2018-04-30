@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.*;
 
 import io.improbable.keanu.algorithms.variational.GradientOptimizer;
+import io.improbable.keanu.vertices.Vertex;
 
 import javax.annotation.Resource;
 
@@ -47,9 +48,16 @@ public class Model {
         ClassLoader classLoader = Model.class.getClassLoader();
 
         System.out.println("Loading the model");
-        ModelFromJSON m = new ModelFromJSON(new File(classLoader.getResource("network.json").getFile()));
+        ModelFromJSON m = new ModelFromJSON(new File(classLoader.getResource("logistic_regression.json").getFile()));
+
 
         BayesNet b = m.getNetworkOfConnectedGraph();
+
+
+        List<Vertex<?>> latents = b.getLatentVertices();
+
+
+
 
         GradientOptimizer optimizer = new GradientOptimizer(b);
         optimizer.maxLikelihood(1000);
@@ -59,6 +67,8 @@ public class Model {
         for(String s:ht.keySet()){
             System.out.printf("%s %f\n",s,ht.get(s));
         }
+
+
     }
 
 

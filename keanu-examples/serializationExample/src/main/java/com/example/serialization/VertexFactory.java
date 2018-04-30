@@ -4,7 +4,9 @@ import io.improbable.keanu.vertices.Vertex;
 import io.improbable.keanu.vertices.dbl.DoubleVertex;
 import io.improbable.keanu.vertices.dbl.nonprobabilistic.ConstantDoubleVertex;
 import io.improbable.keanu.vertices.dbl.nonprobabilistic.operators.binary.AdditionVertex;
+import io.improbable.keanu.vertices.dbl.nonprobabilistic.operators.binary.DivisionVertex;
 import io.improbable.keanu.vertices.dbl.nonprobabilistic.operators.binary.MultiplicationVertex;
+import io.improbable.keanu.vertices.dbl.nonprobabilistic.operators.binary.PowerVertex;
 import io.improbable.keanu.vertices.dbl.probabilistic.GaussianVertex;
 import org.json.JSONObject;
 
@@ -20,8 +22,8 @@ public class VertexFactory{
             v = new ConstantDoubleVertex(obj.getDouble(key));
         }
         else{
-
-            if(vertex_map.keySet().contains(key)){
+            String source = obj.getString(key);
+            if(vertex_map.keySet().contains(source)){
                 v = (DoubleVertex)vertex_map.get(obj.getString(key));
             }
             else{
@@ -51,6 +53,20 @@ public class VertexFactory{
         return (Vertex)v;
     }
 
+    public Vertex makePower(JSONObject obj, String postfix){
+        DoubleVertex base = getVertexOrDouble(obj,"base",postfix);
+        DoubleVertex exponent = getVertexOrDouble(obj,"exponent",postfix);
+        PowerVertex v = new PowerVertex(base,exponent);
+        return (Vertex)v;
+    }
+
+    public Vertex makeDivision(JSONObject obj, String postfix){
+        DoubleVertex numerator = getVertexOrDouble(obj,"numerator",postfix);
+        DoubleVertex denominator = getVertexOrDouble(obj,"denominator",postfix);
+        DivisionVertex v = new DivisionVertex(numerator,denominator);
+        return (Vertex)v;
+    }
+
     public Vertex makeAddition(JSONObject obj, String postfix){
         DoubleVertex a = getVertexOrDouble(obj,"a",postfix);
         DoubleVertex b = getVertexOrDouble(obj,"b",postfix);
@@ -72,6 +88,8 @@ public class VertexFactory{
             case "DOUBLE_CONSTANT": v = makeDoubleConstant(obj, postfix); break;
             case "MULTIPLICATION": v = makeMultiplication(obj, postfix); break;
             case "ADDITION": v = makeAddition(obj, postfix); break;
+            case "POWER": v = makePower(obj,postfix); break;
+            case "DIVISION": v = makeDivision(obj,postfix); break;
 
         }
         return v;

@@ -55,8 +55,6 @@ public class ModelFromJSON {
             observation_values = new Hashtable<>();
             output_names_of_interest = new HashSet<String>();
 
-
-
             getObservationObjects(object, "output", output_observation_names);
             getObservationObjects(object, "input", input_observation_names);
 
@@ -117,6 +115,11 @@ public class ModelFromJSON {
                 n.setReplicate(true);
                 replicate_nodes.add(n);
             }
+        }
+
+        System.out.println("Replicate nodes");
+        for(Node n: replicate_nodes){
+            System.out.printf("\t %s\n",n.getName());
         }
 
     }

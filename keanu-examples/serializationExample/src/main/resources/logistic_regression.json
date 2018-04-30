@@ -1,0 +1,101 @@
+{
+  "network": [
+    {
+      "name":"x1",
+      "type":"double_constant",
+      "value": 1.0
+    },
+    {
+      "name":"x2",
+      "type":"double_constant",
+      "value": 1.0
+    },
+    {
+      "name":"b1",
+      "type":"gaussian",
+      "mean":0.0,
+      "std":5.0
+    },
+    {
+      "name":"b2",
+      "type":"gaussian",
+      "mean":0.0,
+      "std":5.0
+    },
+    {
+      "name":"b0",
+      "type":"gaussian",
+      "mean":0.0,
+      "std":5.0
+    },
+    {
+      "name":"b1x1",
+      "type":"multiplication",
+      "a":"b1",
+      "b":"x1"
+    },
+    {
+      "name":"b2x2",
+      "type":"multiplication",
+      "a":"b2",
+      "b":"x2"
+    },
+    {
+      "name":"b1x1+b2x2",
+      "type":"addition",
+      "a":"b2x2",
+      "b":"b1x1"
+    },
+    {
+      "name":"b1x1+b2x2+b0",
+      "type":"addition",
+      "a":"b1x1+b2x2",
+      "b":"b0"
+    },
+    {
+      "name":"e^(b1x1+b2x2+b0)",
+      "type":"power",
+      "base":2.718281828459,
+      "exponent":"b1x1+b2x2+b0"
+    },
+    {
+      "name":"1+e^(b1x1+b2x2+b0)",
+      "type":"addition",
+      "a":1.0,
+      "b":"e^(b1x1+b2x2+b0)"
+    },
+    {
+      "name":"e^(b1x1+b2x2+b0)/(1+e^(b1x1+b2x2+b0))",
+      "type":"division",
+      "numerator":"e^(b1x1+b2x2+b0)",
+      "denominator":"1+e^(b1x1+b2x2+b0)"
+    },
+
+    {
+      "name":"y",
+      "type":"gaussian",
+      "mean":"e^(b1x1+b2x2+b0)/(1+e^(b1x1+b2x2+b0))",
+      "std":1.0
+    }
+
+  ],
+  "observations":[
+    {
+      "name": "y",
+      "samples": [0, 0, 0.5, 1.0, 1.0],
+      "type": "output"
+    },
+    {
+      "name": "x1",
+      "type": "input",
+      "samples": [-2.0, -1.0, 0.0, 1.0, 2.0]
+    },
+    {
+      "name": "x2",
+      "type": "input",
+      "samples": [-2.0, -1.0, 0.0, 1.0, 2.0]
+    }
+
+
+  ]
+}
